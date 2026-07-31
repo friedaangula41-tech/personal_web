@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="430" height="932" viewBox="0 0 430 932" preserveAspectRatio="none">
+  <defs>
+    <radialGradient id="bg" cx="42%" cy="18%" r="95%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f8f8f8"/>
+    </radialGradient>
+  </defs>
+  <rect width="430" height="932" fill="url(#bg)"/>
+  <line x1="0" y1="104" x2="430" y2="104" stroke="#d9d9d9" stroke-width="2"/>
+
+  <g opacity="0.62" fill="#ececec">
+    <circle cx="18" cy="146" r="4.5"/>
+    <circle cx="38" cy="146" r="4.5"/>
+    <circle cx="58" cy="146" r="4.5"/>
+    <circle cx="78" cy="146" r="4.5"/>
+    <circle cx="18" cy="166" r="4.5"/>
+    <circle cx="38" cy="166" r="4.5"/>
+    <circle cx="58" cy="166" r="4.5"/>
+    <circle cx="78" cy="166" r="4.5"/>
+    <circle cx="18" cy="186" r="4.5"/>
+    <circle cx="38" cy="186" r="4.5"/>
+    <circle cx="58" cy="186" r="4.5"/>
+    <circle cx="78" cy="186" r="4.5"/>
+  </g>
+
+  <g fill="none" stroke="#e1e1e1" stroke-width="2" opacity="0.66" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="98" y1="188" x2="148" y2="188"/>
+    <polygon points="148,188 178,150 230,150 260,188 230,226 178,226"/>
+    <circle cx="205" cy="188" r="9"/>
+    <line x1="260" y1="188" x2="315" y2="142"/>
+    <circle cx="315" cy="142" r="9"/>
+  </g>
+
+  <g fill="none" stroke="#ebebeb" stroke-width="2" opacity="0.5" stroke-linecap="round" stroke-linejoin="round">
+    <polygon points="278,632 318,632 347,660 347,702 318,730 278,730 248,702 248,660"/>
+    <line x1="332" y1="632" x2="332" y2="744"/>
+    <line x1="355" y1="640" x2="408" y2="694"/>
+    <line x1="302" y1="730" x2="354" y2="678"/>
+  </g>
+
+  <g opacity="0.96">
+    <polygon points="308,104 430,104 430,932 300,932 300,260 336,208" fill="#143a6d"/>
+    <polygon points="360,104 430,104 430,932 404,932 404,300 430,260" fill="#ff7a00"/>
+  </g>
+
+  <g fill="none" stroke="#ff7a00" stroke-width="4" stroke-linecap="round" opacity="0.95">
+    <circle cx="268" cy="316" r="160" stroke-dasharray="580 380" stroke-dashoffset="92" transform="rotate(-20 268 316)"/>
+    <circle cx="268" cy="316" r="134" stroke-dasharray="480 330" stroke-dashoffset="216" transform="rotate(24 268 316)"/>
+    <circle cx="142" cy="158" r="5" fill="#ff7a00" stroke="none"/>
+    <circle cx="276" cy="146" r="5" fill="#ff7a00" stroke="none"/>
+    <circle cx="346" cy="244" r="6" fill="#ff7a00" stroke="none"/>
+    <circle cx="136" cy="494" r="6" fill="#ff7a00" stroke="none"/>
+    <circle cx="352" cy="476" r="6" fill="#ff7a00" stroke="none"/>
+  </g>
+</svg>
