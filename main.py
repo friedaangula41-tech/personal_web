@@ -101,7 +101,7 @@ def desktop_nav_item(label: str, *, active: bool, scale: float, on_tap) -> ft.Ge
 def desktop_header(scale: float, active_section: str, navigate_to) -> ft.Container:
     return ft.Container(
         width=None,
-        padding=ft.padding.only(
+        padding=ft.Padding.only(
             left=scale_value(40, scale),
             right=scale_value(48, scale),
             top=scale_value(28, scale),
@@ -142,7 +142,7 @@ def desktop_header(scale: float, active_section: str, navigate_to) -> ft.Contain
 
 def mobile_header(scale: float, nav_open: bool, toggle_nav) -> ft.Container:
     return ft.Container(
-        padding=ft.padding.only(
+        padding=ft.Padding.only(
             left=scale_value(18, scale),
             right=scale_value(14, scale),
             top=scale_value(18, scale),
@@ -178,7 +178,7 @@ def mobile_nav_panel(
         active = active_section == key
         return ft.Container(
             width=item_width,
-            padding=ft.padding.symmetric(
+            padding=ft.Padding.symmetric(
                 horizontal=scale_value(14, scale),
                 vertical=scale_value(12, scale),
             ),
@@ -211,7 +211,7 @@ def mobile_nav_panel(
         left=scale_value(18, scale),
         top=top if top is not None else scale_value(108, scale),
         width=panel_width,
-        padding=ft.padding.all(scale_value(14, scale)),
+        padding=ft.Padding.all(scale_value(14, scale)),
         border_radius=22,
         bgcolor=SOFT_PANEL,
         shadow=ft.BoxShadow(
@@ -357,7 +357,7 @@ def desktop_hero(scale: float, width: float) -> ft.Container:
 
     return ft.Container(
         expand=True,
-        padding=ft.padding.only(
+        padding=ft.Padding.only(
             top=scale_value(136, scale),
             left=0,
             right=0,
@@ -369,7 +369,7 @@ def desktop_hero(scale: float, width: float) -> ft.Container:
             controls=[
                 ft.Container(
                     expand=True,
-                    padding=ft.padding.only(left=scale_value(83, scale)),
+                    padding=ft.Padding.only(left=scale_value(83, scale)),
                     content=hero_copy(
                         scale,
                         centered=False,
@@ -377,7 +377,7 @@ def desktop_hero(scale: float, width: float) -> ft.Container:
                     ),
                 ),
                 ft.Container(
-                    padding=ft.padding.only(
+                    padding=ft.Padding.only(
                         top=scale_value(6, scale),
                         right=scale_value(42, scale),
                     ),
@@ -398,7 +398,7 @@ def mobile_hero(scale: float, width: float) -> ft.Container:
 
     return ft.Container(
         expand=True,
-        padding=ft.padding.only(
+        padding=ft.Padding.only(
             left=scale_value(24, scale),
             right=scale_value(24, scale),
             top=scale_value(18, scale),
@@ -416,7 +416,7 @@ def mobile_hero(scale: float, width: float) -> ft.Container:
                 ),
                 ft.Container(
                     alignment=ft.Alignment.CENTER,
-                    padding=ft.padding.only(top=scale_value(8, scale)),
+                    padding=ft.Padding.only(top=scale_value(8, scale)),
                     content=portrait_shell(scale, portrait_size),
                 ),
             ],
@@ -435,10 +435,10 @@ def section_card(
     return ft.Container(
         expand=width is None,
         width=width,
-        padding=ft.padding.all(scale_value(24, scale)),
+        padding=ft.Padding.all(scale_value(24, scale)),
         border_radius=24,
         bgcolor=WHITE,
-        border=ft.border.all(1, "#e5e5e5"),
+        border=ft.Border.all(1, "#e5e5e5"),
         shadow=ft.BoxShadow(
             spread_radius=0,
             blur_radius=14 * scale,
@@ -517,7 +517,7 @@ def section_block(
         key=key,
         width=width,
         bgcolor=SOFT_PANEL if alternate else WHITE,
-        padding=ft.padding.symmetric(
+        padding=ft.Padding.symmetric(
             horizontal=horizontal_padding,
             vertical=vertical_padding,
         ),
@@ -569,17 +569,17 @@ def cv_section(scale: float, *, mobile: bool, width: float, open_cv_pdf) -> ft.C
 
     return ft.Container(
         expand=True,
-        padding=ft.padding.symmetric(
+        padding=ft.Padding.symmetric(
             horizontal=horizontal_padding,
             vertical=vertical_padding,
         ),
         alignment=ft.Alignment.CENTER,
         content=ft.Container(
             width=card_width,
-            padding=ft.padding.all(scale_value(24, scale)),
+            padding=ft.Padding.all(scale_value(24, scale)),
             border_radius=24,
             bgcolor=WHITE,
-            border=ft.border.all(1, "#e5e5e5"),
+            border=ft.Border.all(1, "#e5e5e5"),
             shadow=ft.BoxShadow(
                 spread_radius=0,
                 blur_radius=16 * scale,
@@ -630,17 +630,17 @@ def awards_section(
 
     return ft.Container(
         expand=True,
-        padding=ft.padding.symmetric(
+        padding=ft.Padding.symmetric(
             horizontal=horizontal_padding,
             vertical=vertical_padding,
         ),
         alignment=ft.Alignment.CENTER,
         content=ft.Container(
             width=card_width,
-            padding=ft.padding.all(scale_value(24, scale)),
+            padding=ft.Padding.all(scale_value(24, scale)),
             border_radius=24,
             bgcolor=WHITE,
-            border=ft.border.all(1, "#e5e5e5"),
+            border=ft.Border.all(1, "#e5e5e5"),
             shadow=ft.BoxShadow(
                 spread_radius=0,
                 blur_radius=16 * scale,
@@ -689,7 +689,7 @@ def document_open_panel(scale: float, button_label: str, open_pdf, mobile: bool)
     button_width = scale_value(240 if mobile else 280, scale)
     return ft.Container(
         width=button_width,
-        padding=ft.padding.symmetric(
+        padding=ft.Padding.symmetric(
             horizontal=scale_value(18, scale),
             vertical=scale_value(14, scale),
         ),
@@ -740,13 +740,13 @@ def certificate_tile(
         on_tap=lambda e: open_pdf(relative_path),
         content=ft.Container(
             expand=True,
-            padding=ft.padding.symmetric(
+            padding=ft.Padding.symmetric(
                 horizontal=scale_value(14, scale),
                 vertical=scale_value(12, scale),
             ),
             border_radius=18,
             bgcolor=WHITE,
-            border=ft.border.all(1, "#e7e7e7"),
+            border=ft.Border.all(1, "#e7e7e7"),
             shadow=ft.BoxShadow(
                 spread_radius=0,
                 blur_radius=10 * scale,
