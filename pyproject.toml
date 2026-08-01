@@ -10,3 +10,7 @@ dependencies = [
 
 [tool.uv]
 package = false
+
+[tool.flet.web]
+base_url = "/personal_web/"
+route_url_strategy = "hash"
