@@ -14,3 +14,16 @@ package = false
 [tool.flet.web]
 base_url = "/personal_web/"
 route_url_strategy = "hash"
+cdn = false
+
+[tool.flet.boot_screen]
+name = "flet"
+
+[tool.flet.boot_screen.flet]
+theme_mode = "light"
+bgcolor_light = "#fbfbfb"
+spinner_color_light = "#ff7a00"
+spinner_size = 34
+text_color_light = "#143a6d"
+startup_message = "Loading portfolio..."
+fade_out_duration = 180

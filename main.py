@@ -16,30 +16,31 @@ TEXT = "#20385f"
 LIGHT = "#dcdcdc"
 WHITE = "#ffffff"
 SOFT_PANEL = "#fbfbfb"
-NAV_ITEMS = (
-    ("ABOUT ME", "about"),
-    ("CV", "cv"),
-    ("AWARDS", "awards"),
-)
+PORTRAIT_IMAGE = "portrait.webp"
+PORTRAIT_PLACEHOLDER = "portrait-placeholder.webp"
+PORTRAIT_FALLBACK = "portrait.jpeg"
 
-CERTIFICATE_COLUMNS = (
-    (
-        ("Best in Civil year one", "certificates/Best in Civil year one.pdf"),
-        ("Third best in Material Science", "certificates/third best in Material Scirnce.pdf"),
-        ("Teamwork", "certificates/teamwork.pdf"),
-    ),
-    (
-        ("Ordinary level certificate", "certificates/ordinary level certificate.pdf"),
-        ("AS level certificate", "certificates/AS level certificate.pdf"),
-        ("AS level certificate 2", "certificates/AS level certificate 2.pdf"),
-    ),
-)
+
+def certificate_columns() -> tuple[tuple[tuple[str, str], ...], ...]:
+    return (
+        (
+            ("Best in Civil year one", "certificates/Best in Civil year one.pdf"),
+            ("Third best in Material Science", "certificates/third best in Material Scirnce.pdf"),
+            ("Teamwork", "certificates/teamwork.pdf"),
+        ),
+        (
+            ("Ordinary level certificate", "certificates/ordinary level certificate.pdf"),
+            ("AS level certificate", "certificates/AS level certificate.pdf"),
+            ("AS level certificate 2", "certificates/AS level certificate 2.pdf"),
+        ),
+    )
 
 
 @dataclass
 class UiState:
     nav_open: bool = False
     active_section: str = "about"
+    layout_signature: tuple[int, int, str, bool, bool] | None = None
 
 
 def clamp(value: float, low: float, high: float) -> float:
@@ -70,30 +71,38 @@ def asset_url(relative_path: str) -> str:
     return "/".join(quote(part) for part in relative_path.split("/"))
 
 
+def layout_signature(page: ft.Page, state: UiState) -> tuple[int, int, str, bool, bool]:
+    width = int(round(page_width(page)))
+    height = int(round(page_height(page)))
+    desktop = width >= DESKTOP_BREAKPOINT
+    nav_open = state.nav_open if not desktop else False
+    return width, height, state.active_section, desktop, nav_open
+
+
 def desktop_nav_item(label: str, *, active: bool, scale: float, on_tap) -> ft.GestureDetector:
     return ft.GestureDetector(
         mouse_cursor=ft.MouseCursor.CLICK,
         on_tap=on_tap,
         content=ft.Column(
-        spacing=8 * scale,
-        horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-        controls=[
-            ft.Text(
-                label,
-                size=23 * scale,
-                weight=ft.FontWeight.BOLD,
-                font_family="MontserratBold",
-                color=ORANGE if active else NAVY,
-                no_wrap=True,
-            ),
-            ft.Container(
-                width=148 * scale,
-                height=4 * scale,
-                bgcolor=ORANGE,
-                opacity=1.0 if active else 0.0,
-                border_radius=ft.BorderRadius.all(999),
-            ),
-        ],
+            spacing=8 * scale,
+            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+            controls=[
+                ft.Text(
+                    label,
+                    size=23 * scale,
+                    weight=ft.FontWeight.BOLD,
+                    font_family="MontserratBold",
+                    color=ORANGE if active else NAVY,
+                    no_wrap=True,
+                ),
+                ft.Container(
+                    width=148 * scale,
+                    height=4 * scale,
+                    bgcolor=ORANGE,
+                    opacity=1.0 if active else 0.0,
+                    border_radius=ft.BorderRadius.all(999),
+                ),
+            ],
         ),
     )
 
@@ -324,6 +333,18 @@ def hero_copy(
 
 def portrait_shell(scale: float, size: float) -> ft.Container:
     photo_size = size * 0.90
+    decode_size = max(256, int(round(size * 1.15)))
+
+    fallback_image = ft.Image(
+        src=PORTRAIT_FALLBACK,
+        width=photo_size,
+        height=photo_size,
+        fit=ft.BoxFit.COVER,
+        cache_width=decode_size,
+        cache_height=decode_size,
+        filter_quality=ft.FilterQuality.MEDIUM,
+    )
+
     return ft.Container(
         width=size,
         height=size,
@@ -342,11 +363,16 @@ def portrait_shell(scale: float, size: float) -> ft.Container:
             shape=ft.BoxShape.CIRCLE,
             clip_behavior=ft.ClipBehavior.ANTI_ALIAS,
             content=ft.Image(
-                src="portrait.jpeg",
+                src=PORTRAIT_IMAGE,
                 width=photo_size,
                 height=photo_size,
                 fit=ft.BoxFit.COVER,
-                filter_quality=ft.FilterQuality.HIGH,
+                placeholder_src=PORTRAIT_PLACEHOLDER,
+                placeholder_fit=ft.BoxFit.COVER,
+                error_content=fallback_image,
+                cache_width=decode_size,
+                cache_height=decode_size,
+                filter_quality=ft.FilterQuality.MEDIUM,
             ),
         ),
     )
@@ -803,13 +829,14 @@ def certificate_gallery(
 ) -> ft.Container:
     column_gap = scale_value(16 if mobile else 20, scale)
     row_gap = scale_value(12 if mobile else 14, scale)
+    columns = certificate_columns()
 
     left_column = ft.Column(
         spacing=row_gap,
         expand=True,
         controls=[
             certificate_tile(scale, label, relative_path, open_pdf, mobile=mobile)
-            for label, relative_path in CERTIFICATE_COLUMNS[0]
+            for label, relative_path in columns[0]
         ],
     )
     right_column = ft.Column(
@@ -817,7 +844,7 @@ def certificate_gallery(
         expand=True,
         controls=[
             certificate_tile(scale, label, relative_path, open_pdf, mobile=mobile)
-            for label, relative_path in CERTIFICATE_COLUMNS[1]
+            for label, relative_path in columns[1]
         ],
     )
 
@@ -859,7 +886,7 @@ def build_layout(
         width=width,
         height=height,
         fit=ft.BoxFit.FILL,
-        filter_quality=ft.FilterQuality.HIGH,
+        filter_quality=ft.FilterQuality.MEDIUM,
     )
 
     if state.active_section == "cv":
@@ -950,6 +977,10 @@ def main(page: ft.Page) -> None:
         open_pdf("certificates/certificates.pdf")
 
     def rebuild(_: ft.ControlEvent | None = None) -> None:
+        current_signature = layout_signature(page, state)
+        if state.layout_signature == current_signature:
+            return
+        state.layout_signature = current_signature
         page.controls.clear()
         page.add(
             build_layout(
